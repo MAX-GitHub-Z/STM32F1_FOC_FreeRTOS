@@ -29,4 +29,3 @@
 ..\..\output\bsp_iic.o: ..\..\Libraries\FWlib\inc\stm32f10x_usart.h
 ..\..\output\bsp_iic.o: ..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h
 ..\..\output\bsp_iic.o: ..\..\Libraries\FWlib\inc\misc.h
-..\..\output\bsp_iic.o: ..\..\User\bsp\systick\bsp_systick.h

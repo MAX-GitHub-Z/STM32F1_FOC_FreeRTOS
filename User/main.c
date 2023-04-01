@@ -26,7 +26,7 @@
 /* 开发板硬件bsp头文件 */
 #include "bsp_led.h"
 #include "bsp_usart.h"
-
+#include "bsp_iic.h"
 /**************************** 任务句柄 ********************************/
 /* 
  * 任务句柄是一个指针，用于指向一个任务，当任务创建好之后，它就具有了一个任务句柄
@@ -36,7 +36,7 @@
  /* 创建任务句柄 */
 static TaskHandle_t AppTaskCreate_Handle = NULL;
 /* LED1任务句柄 */
-static TaskHandle_t LED1_Task_Handle = NULL;
+static TaskHandle_t IIC_Task_Handle = NULL;
 /* LED2任务句柄 */
 static TaskHandle_t LED2_Task_Handle = NULL;
 /********************************** 内核对象句柄 *********************************/
@@ -65,7 +65,7 @@ static TaskHandle_t LED2_Task_Handle = NULL;
 */
 static void AppTaskCreate(void);/* 用于创建任务 */
 
-static void LED1_Task(void* pvParameters);/* LED1_Task任务实现 */
+static void IIC_Task(void* pvParameters);/* LED1_Task任务实现 */
 static void LED2_Task(void* pvParameters);/* LED2_Task任务实现 */
 
 static void BSP_Init(void);/* 用于初始化板载相关资源 */
@@ -84,7 +84,7 @@ int main(void)
 
   /* 开发板硬件初始化 */
   BSP_Init();
-  printf("这是一个[野火]-STM32全系列开发板-FreeRTOS-动态创建多任务实验!\r\n");
+  printf("这是一个FOC-FreeRTOS-多任务实验!\r\n");
    /* 创建AppTaskCreate任务 */
   xReturn = xTaskCreate((TaskFunction_t )AppTaskCreate,  /* 任务入口函数 */
                         (const char*    )"AppTaskCreate",/* 任务名字 */
@@ -114,15 +114,15 @@ static void AppTaskCreate(void)
   
   taskENTER_CRITICAL();           //进入临界区
   
-  /* 创建LED_Task任务 */
-  xReturn = xTaskCreate((TaskFunction_t )LED1_Task, /* 任务入口函数 */
-                        (const char*    )"LED1_Task",/* 任务名字 */
+  /* 创建IIC_Task任务 */
+  xReturn = xTaskCreate((TaskFunction_t )IIC_Task, /* 任务入口函数 */
+                        (const char*    )"IIC_Task",/* 任务名字 */
                         (uint16_t       )512,   /* 任务栈大小 */
                         (void*          )NULL,	/* 任务入口函数参数 */
                         (UBaseType_t    )2,	    /* 任务的优先级 */
-                        (TaskHandle_t*  )&LED1_Task_Handle);/* 任务控制块指针 */
+                        (TaskHandle_t*  )&IIC_Task_Handle);/* 任务控制块指针 */
   if(pdPASS == xReturn)
-    printf("创建LED1_Task任务成功!\r\n");
+    printf("创建IIC_Task任务成功!\r\n");
   
 	/* 创建LED_Task任务 */
   xReturn = xTaskCreate((TaskFunction_t )LED2_Task, /* 任务入口函数 */
@@ -147,17 +147,16 @@ static void AppTaskCreate(void)
   * @ 参数    ：   
   * @ 返回值  ： 无
   ********************************************************************/
-static void LED1_Task(void* parameter)
+static void IIC_Task(void* parameter)
 {	
+	uint16_t angle=0;
     while (1)
     {
-        LED1_ON;
-        vTaskDelay(500);   /* 延时500个tick */
-        printf("LED1_Task Running,LED1_ON\r\n");
+        angle=AS5600_ReadTwoByte();
+			printf("原始角度=%x\r\n",angle);
+			printf("解算角度度数=%f\r\n",angle*1.0/4095*365);
+        vTaskDelay(300);   /* 延时500个tick */		 		
         
-        LED1_OFF;     
-        vTaskDelay(500);   /* 延时500个tick */		 		
-        printf("LED1_Task Running,LED1_OFF\r\n");
     }
 }
 
@@ -171,13 +170,13 @@ static void LED2_Task(void* parameter)
 {	
     while (1)
     {
-        LED2_ON;
-        vTaskDelay(500);   /* 延时500个tick */
-        printf("LED2_Task Running,LED2_ON\r\n");
+        //LED2_ON;
+        //vTaskDelay(500);   /* 延时500个tick */
+       // printf("LED2_Task Running,LED2_ON\r\n");
         
-        LED2_OFF;     
+       // LED2_OFF;     
         vTaskDelay(500);   /* 延时500个tick */		 		
-        printf("LED2_Task Running,LED2_OFF\r\n");
+        //printf("LED2_Task Running,LED2_OFF\r\n");
     }
 }
 /***********************************************************************
@@ -200,6 +199,9 @@ static void BSP_Init(void)
 
 	/* 串口初始化	*/
 	USART_Config();
+	
+	/*IIC引脚初始化*/
+	IIC_GPIO_Config();
   
 }
 
