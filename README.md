@@ -1,0 +1,2 @@
+# STM32F1_FOC_FreeRTOS
+学习在STM32F103上运行FreeRTOS的同时运行FOC算法驱动电机
