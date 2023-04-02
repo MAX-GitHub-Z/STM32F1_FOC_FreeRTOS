@@ -23,6 +23,22 @@
   * @param  无
   * @retval 无
   */
+	static void NVIC_Configuration(void)
+{
+  NVIC_InitTypeDef NVIC_InitStructure;
+  
+  
+  /* 配置USART为中断源 */
+  NVIC_InitStructure.NVIC_IRQChannel = DEBUG_USART_IRQ;
+  /* 抢断优先级*/
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 7;
+  /* 子优先级 */
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+  /* 使能中断 */
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  /* 初始化配置NVIC */
+  NVIC_Init(&NVIC_InitStructure);
+}
 void USART_Config(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -59,11 +75,20 @@ void USART_Config(void)
 	USART_HardwareFlowControl_None;
 	// 配置工作模式，收发一起
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+	//使能串口接收/空闲中断
+	USART_ITConfig(DEBUG_USARTx, USART_IT_RXNE, ENABLE);	
+	USART_ITConfig(DEBUG_USARTx,USART_IT_IDLE,ENABLE);
+	
 	// 完成串口的初始化配置
 	USART_Init(DEBUG_USARTx, &USART_InitStructure);	
 	
 	// 使能串口
 	USART_Cmd(DEBUG_USARTx, ENABLE);	    
+}
+void USART1_Init()
+{
+	NVIC_Configuration();
+	USART_Config();
 }
 
 /*****************  发送一个字节 **********************/

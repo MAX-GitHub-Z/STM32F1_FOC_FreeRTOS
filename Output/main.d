@@ -40,5 +40,8 @@
 ..\..\output\main.o: ..\..\FreeRTOS\include\mpu_wrappers.h
 ..\..\output\main.o: ..\..\FreeRTOS\include\task.h
 ..\..\output\main.o: ..\..\FreeRTOS\include\list.h
+..\..\output\main.o: ..\..\FreeRTOS\include\queue.h
+..\..\output\main.o: ..\..\FreeRTOS\include\semphr.h
 ..\..\output\main.o: ..\..\User\bsp\led\bsp_led.h
 ..\..\output\main.o: ..\..\User\bsp\iic\bsp_iic.h
+..\..\output\main.o: E:\keil5\ARM\ARMCC\Bin\..\include\string.h

@@ -4,15 +4,8 @@
   * @author  fire
   * @version V1.0
   * @date    2018-xx-xx
-  * @brief   FreeRTOS v9.0.0 + STM32 动态创建多任务
+  * @brief   FreeRTOS v9.0.0 + STM32 +FOC驱动
   *********************************************************************
-  * @attention
-  *
-  * 实验平台:野火 STM32全系列开发板 
-  * 论坛    :http://www.firebbs.cn
-  * 淘宝    :https://fire-stm32.taobao.com
-  *
-  **********************************************************************
   */ 
  
 /*
@@ -20,13 +13,22 @@
 *                             包含的头文件
 *************************************************************************
 */ 
+
 /* FreeRTOS头文件 */
 #include "FreeRTOS.h"
 #include "task.h"
+#include "queue.h"
+#include "semphr.h"//二值信号量头文件
+
 /* 开发板硬件bsp头文件 */
 #include "bsp_led.h"
 #include "bsp_usart.h"
 #include "bsp_iic.h"
+
+
+/*常用C语言头文件*/
+#include <stdio.h>
+#include <string.h>
 /**************************** 任务句柄 ********************************/
 /* 
  * 任务句柄是一个指针，用于指向一个任务，当任务创建好之后，它就具有了一个任务句柄
@@ -35,10 +37,10 @@
  */
  /* 创建任务句柄 */
 static TaskHandle_t AppTaskCreate_Handle = NULL;
-/* LED1任务句柄 */
-static TaskHandle_t IIC_Task_Handle = NULL;
-/* LED2任务句柄 */
-static TaskHandle_t LED2_Task_Handle = NULL;
+/* FOC任务句柄 */
+static TaskHandle_t FOC_PID_Task_Handle = NULL;
+/* UASRT任务句柄 */
+ TaskHandle_t USART_Task_Handle = NULL;
 /********************************** 内核对象句柄 *********************************/
 /*
  * 信号量，消息队列，事件标志组，软件定时器这些都属于内核的对象，要想使用这些内核
@@ -56,8 +58,11 @@ static TaskHandle_t LED2_Task_Handle = NULL;
 /*
  * 当我们在写应用程序的时候，可能需要用到一些全局变量。
  */
+ //角度滤波（一阶滤波）
+#define first_fliter   0.98
 
-
+//串口接收缓存
+unsigned char Usart_Rx_Buf[20];//串口接收数据数组
 /*
 *************************************************************************
 *                             函数声明
@@ -65,8 +70,8 @@ static TaskHandle_t LED2_Task_Handle = NULL;
 */
 static void AppTaskCreate(void);/* 用于创建任务 */
 
-static void IIC_Task(void* pvParameters);/* LED1_Task任务实现 */
-static void LED2_Task(void* pvParameters);/* LED2_Task任务实现 */
+static void FOC_PID_Task(void* pvParameters);/* FOC_PID_Task任务实现 */
+static void USART_Task(void* pvParameters);/* LED2_Task任务实现 */
 
 static void BSP_Init(void);/* 用于初始化板载相关资源 */
 
@@ -88,7 +93,7 @@ int main(void)
    /* 创建AppTaskCreate任务 */
   xReturn = xTaskCreate((TaskFunction_t )AppTaskCreate,  /* 任务入口函数 */
                         (const char*    )"AppTaskCreate",/* 任务名字 */
-                        (uint16_t       )512,  /* 任务栈大小 */
+                        (uint16_t       )128,  /* 任务栈大小 */
                         (void*          )NULL,/* 任务入口函数参数 */
                         (UBaseType_t    )1, /* 任务的优先级 */
                         (TaskHandle_t*  )&AppTaskCreate_Handle);/* 任务控制块指针 */ 
@@ -114,25 +119,25 @@ static void AppTaskCreate(void)
   
   taskENTER_CRITICAL();           //进入临界区
   
-  /* 创建IIC_Task任务 */
-  xReturn = xTaskCreate((TaskFunction_t )IIC_Task, /* 任务入口函数 */
-                        (const char*    )"IIC_Task",/* 任务名字 */
+  /* 创建Sampl_Task任务 */
+  xReturn = xTaskCreate((TaskFunction_t )FOC_PID_Task, /* 任务入口函数 */
+                        (const char*    )"FOC_PID_Task",/* 任务名字 */
                         (uint16_t       )512,   /* 任务栈大小 */
                         (void*          )NULL,	/* 任务入口函数参数 */
                         (UBaseType_t    )2,	    /* 任务的优先级 */
-                        (TaskHandle_t*  )&IIC_Task_Handle);/* 任务控制块指针 */
-  if(pdPASS == xReturn)
-    printf("创建IIC_Task任务成功!\r\n");
+                        (TaskHandle_t*  )&FOC_PID_Task_Handle);/* 任务控制块指针 */
+//  if(pdPASS == xReturn)
+//    printf("创建FOC_PID_Task任务成功!\r\n");
   
-	/* 创建LED_Task任务 */
-  xReturn = xTaskCreate((TaskFunction_t )LED2_Task, /* 任务入口函数 */
-                        (const char*    )"LED2_Task",/* 任务名字 */
-                        (uint16_t       )512,   /* 任务栈大小 */
+	/* USART_Task */
+  xReturn = xTaskCreate((TaskFunction_t )USART_Task, /* 任务入口函数 */
+                        (const char*    )"USART_Task",/* 任务名字 */
+                        (uint16_t       )128,   /* 任务栈大小 */
                         (void*          )NULL,	/* 任务入口函数参数 */
                         (UBaseType_t    )3,	    /* 任务的优先级 */
-                        (TaskHandle_t*  )&LED2_Task_Handle);/* 任务控制块指针 */
-  if(pdPASS == xReturn)
-    printf("创建LED2_Task任务成功!\r\n");
+                        (TaskHandle_t*  )&USART_Task_Handle);/* 任务控制块指针 */
+//  if(pdPASS == xReturn)
+//    printf("创建USART_Task任务成功!\r\n");
   
   vTaskDelete(AppTaskCreate_Handle); //删除AppTaskCreate任务
   
@@ -142,41 +147,48 @@ static void AppTaskCreate(void)
 
 
 /**********************************************************************
-  * @ 函数名  ： LED_Task
-  * @ 功能说明： LED_Task任务主体
+  * @ 函数名  ： FOC_PID_Task
+  * @ 功能说明： FOC_PID_Task任务主体,主要实现FOC与PID算法
   * @ 参数    ：   
   * @ 返回值  ： 无
   ********************************************************************/
-static void IIC_Task(void* parameter)
+static void FOC_PID_Task(void* parameter)
 {	
-	uint16_t angle=0;
+	uint16_t angle_new=0;
+	uint16_t angle_old=AS5600_ReadTwoByte();
     while (1)
     {
-        angle=AS5600_ReadTwoByte();
-			printf("原始角度=%x\r\n",angle);
-			printf("解算角度度数=%f\r\n",angle*1.0/4095*365);
-        vTaskDelay(300);   /* 延时500个tick */		 		
+			//读取角度值
+      angle_new=AS5600_ReadTwoByte();
+			
+			//进行一阶滤波Y(n)=a*X(n)+(1-a)*Y(n-1)
+			//α=滤波系数；X(n)=本次采样值；Y(n-1)=上次滤波输出值；Y(n)=本次滤波输出值。 
+			angle_new=(first_fliter*angle_new)+((1-first_fliter)*angle_old);
+			//更新旧的值
+			angle_old=angle_new;
+			//printf("当前角度值：%d\r\n",angle_old);
+			
+			
+        vTaskDelay(500);   /* 延时30个tick */		 		
         
     }
 }
 
 /**********************************************************************
-  * @ 函数名  ： LED_Task
-  * @ 功能说明： LED_Task任务主体
+  * @ 函数名  ： USART_Task
+  * @ 功能说明： USART_Task任务主体,主要实现获取串口数据并进行处理
   * @ 参数    ：   
   * @ 返回值  ： 无
   ********************************************************************/
-static void LED2_Task(void* parameter)
+static void USART_Task(void* parameter)
 {	
+	unsigned char* data=Usart_Rx_Buf;
     while (1)
     {
-        //LED2_ON;
-        //vTaskDelay(500);   /* 延时500个tick */
-       // printf("LED2_Task Running,LED2_ON\r\n");
-        
-       // LED2_OFF;     
-        vTaskDelay(500);   /* 延时500个tick */		 		
-        //printf("LED2_Task Running,LED2_OFF\r\n");
+				ulTaskNotifyTake(pdTRUE,portMAX_DELAY);//获取信号通知
+				printf("数据:%s",data);
+				memset(Usart_Rx_Buf, 0, sizeof(Usart_Rx_Buf));//对字符串进行清零操作 		
+       
     }
 }
 /***********************************************************************
@@ -198,10 +210,11 @@ static void BSP_Init(void)
 	LED_GPIO_Config();
 
 	/* 串口初始化	*/
-	USART_Config();
+	USART1_Init();
 	
 	/*IIC引脚初始化*/
 	IIC_GPIO_Config();
+	
   
 }
 

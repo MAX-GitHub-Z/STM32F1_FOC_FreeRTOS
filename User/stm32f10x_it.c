@@ -166,7 +166,37 @@ void SysTick_Handler(void)
 /*void PPP_IRQHandler(void)
 {
 }*/
+ extern TaskHandle_t USART_Task_Handle;
+ uint8_t RX_T=0;
+extern  unsigned char Usart_Rx_Buf[];//串口接收数据数组
+void USART1_IRQHandler()
+{
+	uint8_t data=0;
+	  UBaseType_t uxUSART_Intterupt;//中断临界区暂存值
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;//解除任务通知
+  uxUSART_Intterupt=taskENTER_CRITICAL_FROM_ISR();//进入临界区
+	 if(USART_GetITStatus(DEBUG_USARTx,USART_IT_RXNE)!=RESET)
+  {
+    data=USART_ReceiveData(DEBUG_USARTx);
+    //USART_SendData(DEBUG_USARTx,data);
+    Usart_Rx_Buf[RX_T++]=data;
 
+    USART_ClearITPendingBit(USART1,USART_IT_RXNE);//清空中断标志位
+  }
+	
+	
+	  if(USART_GetITStatus(DEBUG_USARTx,USART_IT_IDLE)!=RESET)//空闲中断
+  {
+   RX_T=0;
+    vTaskNotifyGiveFromISR(USART_Task_Handle,&xHigherPriorityTaskWoken); //任务通知，解除串口的任务挂起
+    data=DEBUG_USARTx->SR;//串口空闲中断的中断标志只能通过先读SR寄存器，再读DR寄存器清除！
+    data=DEBUG_USARTx->DR;
+		xTaskResumeFromISR( USART_Task_Handle );
+  }
+	
+	taskEXIT_CRITICAL_FROM_ISR(uxUSART_Intterupt);//退出临界区
+	
+}
 /**
   * @}
   */ 

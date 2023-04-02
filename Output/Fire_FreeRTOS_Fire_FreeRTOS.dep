@@ -702,7 +702,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_spi.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5C90F746)
-F (..\..\User\main.c)(0x6427AA54)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O1 --apcs=interwork -I ..\..\Libraries\CMSIS -I ..\..\User -I ..\..\Libraries\FWlib\inc -I ..\..\FreeRTOS\include -I ..\..\FreeRTOS\port\RVDS\ARM_CM3 -I ..\..\User\bsp\led -I ..\..\User\bsp\usart -I ..\..\User\bsp\iic-IE:\keil5\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="538" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\main.o --omf_browse ..\..\output\main.crf --depend ..\..\output\main.d)
+F (..\..\User\main.c)(0x64298A5E)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O1 --apcs=interwork -I ..\..\Libraries\CMSIS -I ..\..\User -I ..\..\Libraries\FWlib\inc -I ..\..\FreeRTOS\include -I ..\..\FreeRTOS\port\RVDS\ARM_CM3 -I ..\..\User\bsp\led -I ..\..\User\bsp\usart -I ..\..\User\bsp\iic-IE:\keil5\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="538" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\main.o --omf_browse ..\..\output\main.crf --depend ..\..\output\main.d)
 I (..\..\FreeRTOS\include\FreeRTOS.h)(0x5C90F746)
 I (E:\keil5\ARM\ARMCC\include\stddef.h)(0x5CEBCE40)
 I (E:\keil5\ARM\ARMCC\include\stdint.h)(0x5CEBCE40)
@@ -734,7 +734,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5C90F746)
-I (..\..\User\bsp\usart\bsp_usart.h)(0x5C90F746)
+I (..\..\User\bsp\usart\bsp_usart.h)(0x6429811D)
 I (E:\keil5\ARM\ARMCC\include\stdio.h)(0x5CEBCE41)
 I (..\..\FreeRTOS\include\projdefs.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\portable.h)(0x5C90F746)
@@ -743,10 +743,13 @@ I (..\..\FreeRTOS\port\RVDS\ARM_CM3\portmacro.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\mpu_wrappers.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\task.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\list.h)(0x5C90F746)
+I (..\..\FreeRTOS\include\queue.h)(0x5C90F746)
+I (..\..\FreeRTOS\include\semphr.h)(0x5C90F746)
 I (..\..\User\bsp\led\bsp_led.h)(0x5C90F746)
 I (..\..\User\bsp\iic\bsp_iic.h)(0x6427A7F8)
+I (E:\keil5\ARM\ARMCC\include\string.h)(0x5CEBCE40)
 F (..\..\User\stm32f10x_conf.h)(0x5C90F746)()
-F (..\..\User\stm32f10x_it.c)(0x5C90F746)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O1 --apcs=interwork -I ..\..\Libraries\CMSIS -I ..\..\User -I ..\..\Libraries\FWlib\inc -I ..\..\FreeRTOS\include -I ..\..\FreeRTOS\port\RVDS\ARM_CM3 -I ..\..\User\bsp\led -I ..\..\User\bsp\usart -I ..\..\User\bsp\iic-IE:\keil5\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="538" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\stm32f10x_it.o --omf_browse ..\..\output\stm32f10x_it.crf --depend ..\..\output\stm32f10x_it.d)
+F (..\..\User\stm32f10x_it.c)(0x642988BC)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O1 --apcs=interwork -I ..\..\Libraries\CMSIS -I ..\..\User -I ..\..\Libraries\FWlib\inc -I ..\..\FreeRTOS\include -I ..\..\FreeRTOS\port\RVDS\ARM_CM3 -I ..\..\User\bsp\led -I ..\..\User\bsp\usart -I ..\..\User\bsp\iic-IE:\keil5\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="538" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\stm32f10x_it.o --omf_browse ..\..\output\stm32f10x_it.crf --depend ..\..\output\stm32f10x_it.d)
 I (..\..\User\stm32f10x_it.h)(0x5C90F746)
 I (..\..\Libraries\CMSIS\stm32f10x.h)(0x5C90F746)
 I (..\..\Libraries\CMSIS\core_cm3.h)(0x5C90F746)
@@ -779,7 +782,7 @@ I (..\..\Libraries\FWlib\inc\misc.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\FreeRTOS.h)(0x5C90F746)
 I (E:\keil5\ARM\ARMCC\include\stddef.h)(0x5CEBCE40)
 I (..\..\User\FreeRTOSConfig.h)(0x5C90F746)
-I (..\..\User\bsp\usart\bsp_usart.h)(0x5C90F746)
+I (..\..\User\bsp\usart\bsp_usart.h)(0x6429811D)
 I (E:\keil5\ARM\ARMCC\include\stdio.h)(0x5CEBCE41)
 I (..\..\FreeRTOS\include\projdefs.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\portable.h)(0x5C90F746)
@@ -819,8 +822,8 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5C90F746)
-F (..\..\User\bsp\usart\bsp_usart.c)(0x5C90F746)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O1 --apcs=interwork -I ..\..\Libraries\CMSIS -I ..\..\User -I ..\..\Libraries\FWlib\inc -I ..\..\FreeRTOS\include -I ..\..\FreeRTOS\port\RVDS\ARM_CM3 -I ..\..\User\bsp\led -I ..\..\User\bsp\usart -I ..\..\User\bsp\iic-IE:\keil5\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="538" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\bsp_usart.o --omf_browse ..\..\output\bsp_usart.crf --depend ..\..\output\bsp_usart.d)
-I (..\..\User\bsp\usart\bsp_usart.h)(0x5C90F746)
+F (..\..\User\bsp\usart\bsp_usart.c)(0x642980F3)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O1 --apcs=interwork -I ..\..\Libraries\CMSIS -I ..\..\User -I ..\..\Libraries\FWlib\inc -I ..\..\FreeRTOS\include -I ..\..\FreeRTOS\port\RVDS\ARM_CM3 -I ..\..\User\bsp\led -I ..\..\User\bsp\usart -I ..\..\User\bsp\iic-IE:\keil5\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-D__UVISION_VERSION="538" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\bsp_usart.o --omf_browse ..\..\output\bsp_usart.crf --depend ..\..\output\bsp_usart.d)
+I (..\..\User\bsp\usart\bsp_usart.h)(0x6429811D)
 I (..\..\Libraries\CMSIS\stm32f10x.h)(0x5C90F746)
 I (..\..\Libraries\CMSIS\core_cm3.h)(0x5C90F746)
 I (E:\keil5\ARM\ARMCC\include\stdint.h)(0x5CEBCE40)
@@ -913,7 +916,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5C90F746)
-I (..\..\User\bsp\usart\bsp_usart.h)(0x5C90F746)
+I (..\..\User\bsp\usart\bsp_usart.h)(0x6429811D)
 I (E:\keil5\ARM\ARMCC\include\stdio.h)(0x5CEBCE41)
 I (..\..\FreeRTOS\include\projdefs.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\portable.h)(0x5C90F746)
@@ -956,7 +959,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5C90F746)
-I (..\..\User\bsp\usart\bsp_usart.h)(0x5C90F746)
+I (..\..\User\bsp\usart\bsp_usart.h)(0x6429811D)
 I (E:\keil5\ARM\ARMCC\include\stdio.h)(0x5CEBCE41)
 I (..\..\FreeRTOS\include\projdefs.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\portable.h)(0x5C90F746)
@@ -1000,7 +1003,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5C90F746)
-I (..\..\User\bsp\usart\bsp_usart.h)(0x5C90F746)
+I (..\..\User\bsp\usart\bsp_usart.h)(0x6429811D)
 I (E:\keil5\ARM\ARMCC\include\stdio.h)(0x5CEBCE41)
 I (..\..\FreeRTOS\include\projdefs.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\portable.h)(0x5C90F746)
@@ -1042,7 +1045,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5C90F746)
-I (..\..\User\bsp\usart\bsp_usart.h)(0x5C90F746)
+I (..\..\User\bsp\usart\bsp_usart.h)(0x6429811D)
 I (E:\keil5\ARM\ARMCC\include\stdio.h)(0x5CEBCE41)
 I (..\..\FreeRTOS\include\projdefs.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\portable.h)(0x5C90F746)
@@ -1086,7 +1089,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5C90F746)
-I (..\..\User\bsp\usart\bsp_usart.h)(0x5C90F746)
+I (..\..\User\bsp\usart\bsp_usart.h)(0x6429811D)
 I (E:\keil5\ARM\ARMCC\include\stdio.h)(0x5CEBCE41)
 I (..\..\FreeRTOS\include\projdefs.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\portable.h)(0x5C90F746)
@@ -1130,7 +1133,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5C90F746)
-I (..\..\User\bsp\usart\bsp_usart.h)(0x5C90F746)
+I (..\..\User\bsp\usart\bsp_usart.h)(0x6429811D)
 I (E:\keil5\ARM\ARMCC\include\stdio.h)(0x5CEBCE41)
 I (..\..\FreeRTOS\include\projdefs.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\portable.h)(0x5C90F746)
@@ -1174,7 +1177,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5C90F746)
-I (..\..\User\bsp\usart\bsp_usart.h)(0x5C90F746)
+I (..\..\User\bsp\usart\bsp_usart.h)(0x6429811D)
 I (E:\keil5\ARM\ARMCC\include\stdio.h)(0x5CEBCE41)
 I (..\..\FreeRTOS\include\projdefs.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\portable.h)(0x5C90F746)
@@ -1215,7 +1218,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x5C90F746)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5C90F746)
-I (..\..\User\bsp\usart\bsp_usart.h)(0x5C90F746)
+I (..\..\User\bsp\usart\bsp_usart.h)(0x6429811D)
 I (E:\keil5\ARM\ARMCC\include\stdio.h)(0x5CEBCE41)
 I (..\..\FreeRTOS\include\projdefs.h)(0x5C90F746)
 I (..\..\FreeRTOS\include\portable.h)(0x5C90F746)
