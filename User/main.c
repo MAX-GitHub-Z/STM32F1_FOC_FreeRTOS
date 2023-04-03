@@ -24,7 +24,7 @@
 #include "bsp_led.h"
 #include "bsp_usart.h"
 #include "bsp_iic.h"
-
+#include "bsp_adc.h"
 
 /*常用C语言头文件*/
 #include <stdio.h>
@@ -63,6 +63,10 @@ static TaskHandle_t FOC_PID_Task_Handle = NULL;
 
 //串口接收缓存
 unsigned char Usart_Rx_Buf[20];//串口接收数据数组
+
+
+
+
 /*
 *************************************************************************
 *                             函数声明
@@ -154,11 +158,23 @@ static void AppTaskCreate(void)
   ********************************************************************/
 static void FOC_PID_Task(void* parameter)
 {	
+	//角度的更新值
 	uint16_t angle_new=0;
+	//角度的久值（运行前读一次保证获得的初始角度为久值）
 	uint16_t angle_old=AS5600_ReadTwoByte();
+	//ADC1的值
+	uint16_t ADC1_Value=0;
+	//ADC2的值
+	uint16_t ADC2_Value=0;
+	//上电前获取一次电压值，第一次获取的电压值误差较大
+	ADC_SoftwareStartConvCmd(ADC1, ENABLE);  //开始转换
+	ADC1_Value=ADC1->DR;
+	ADC2_Value=ADC2->DR;
+	ADC_SoftwareStartConvCmd(ADC1, DISABLE);  //转换结束
     while (1)
     {
-			//读取角度值
+			/**********读取角度值************************************************/
+
       angle_new=AS5600_ReadTwoByte();
 			
 			//进行一阶滤波Y(n)=a*X(n)+(1-a)*Y(n-1)
@@ -166,7 +182,19 @@ static void FOC_PID_Task(void* parameter)
 			angle_new=(first_fliter*angle_new)+((1-first_fliter)*angle_old);
 			//更新旧的值
 			angle_old=angle_new;
-			//printf("当前角度值：%d\r\n",angle_old);
+			//printf("当前角度值：%f\r\n",angle_old*1.0/4095*359);
+				
+			
+			
+			/****************读取电流值******************************************/
+			ADC_SoftwareStartConvCmd(ADC1, ENABLE);  //开始转换
+			ADC1_Value=ADC1->DR;
+			ADC2_Value=ADC2->DR;
+			ADC_SoftwareStartConvCmd(ADC1, DISABLE);  //转换结束
+
+			printf("\r\nPA1采集电压值=%f\r\n",-1*((ADC1_Value*3.3/4095)-1.65)/0.5);//IB电流 INA420A2 放大50
+			printf("PA2采集电压值= %f\r\n",((ADC2_Value*3.3/4095)-1.65)/0.5);//IA电流 INA420A2 放大50
+			
 			
 			
         vTaskDelay(500);   /* 延时30个tick */		 		
@@ -215,6 +243,8 @@ static void BSP_Init(void)
 	/*IIC引脚初始化*/
 	IIC_GPIO_Config();
 	
+	/*ADC初始化*/
+	ADC_Config();
   
 }
 

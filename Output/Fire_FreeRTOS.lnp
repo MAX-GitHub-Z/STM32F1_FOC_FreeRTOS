@@ -30,6 +30,7 @@
 "..\..\output\bsp_led.o"
 "..\..\output\bsp_usart.o"
 "..\..\output\bsp_iic.o"
+"..\..\output\bsp_adc.o"
 "..\..\output\croutine.o"
 "..\..\output\event_groups.o"
 "..\..\output\list.o"

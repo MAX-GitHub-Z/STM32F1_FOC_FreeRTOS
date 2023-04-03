@@ -44,4 +44,5 @@
 ..\..\output\main.o: ..\..\FreeRTOS\include\semphr.h
 ..\..\output\main.o: ..\..\User\bsp\led\bsp_led.h
 ..\..\output\main.o: ..\..\User\bsp\iic\bsp_iic.h
+..\..\output\main.o: ..\..\User\bsp\adc\bsp_adc.h
 ..\..\output\main.o: E:\keil5\ARM\ARMCC\Bin\..\include\string.h

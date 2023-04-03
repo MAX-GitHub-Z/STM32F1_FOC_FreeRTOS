@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\CMSIS;..\..\User;..\..\Libraries\FWlib\inc;..\..\FreeRTOS\include;..\..\FreeRTOS\port\RVDS\ARM_CM3;..\..\User\bsp\led;..\..\User\bsp\usart;..\..\User\bsp\iic</IncludePath>
+              <IncludePath>..\..\Libraries\CMSIS;..\..\User;..\..\Libraries\FWlib\inc;..\..\FreeRTOS\include;..\..\FreeRTOS\port\RVDS\ARM_CM3;..\..\User\bsp\led;..\..\User\bsp\usart;..\..\User\bsp\iic;..\..\User\bsp\adc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -583,6 +583,11 @@
               <FileName>bsp_iic.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\bsp\iic\bsp_iic.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\bsp\adc\bsp_adc.c</FilePath>
             </File>
           </Files>
         </Group>
